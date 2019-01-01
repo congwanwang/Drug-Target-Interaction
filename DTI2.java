@@ -23,7 +23,7 @@ public class DTI2 {
 
 	private Matrix weightMat = null;
 
-	private List<String> truePositive = new ArrayList<>(); // ¼ÇÂ¼1->0 µÄÎ»ÖÃĞÅÏ¢
+	private List<String> truePositive = new ArrayList<>(); // è®°å½• 1->0 çš„ä½ç½®ä¿¡æ¯ 
 
 	public DTI2(int rowNum, int colNum, int fDim, int K) {
 		super();
@@ -39,7 +39,7 @@ public class DTI2 {
 
 		DTI2 dti = new DTI2(664, 445, 50, 5);
 		double lambda = 0.02;
-		// ¶ÁÈ¡ÕæÊµ¾ØÕóA
+		//è¯»å–çœŸå®çŸ©é˜µA
 		File file = new File("C:/Data/MatrixA.txt");
 		Matrix A = dti.preProcess(file);
 //
@@ -52,17 +52,17 @@ public class DTI2 {
 	}
 	
 	public Matrix nmfOD(Matrix A, Matrix simMat, Matrix diagMat, double lambda) {
-		// Ëæ»ú¶¨ÒåÔªËØÎª0µÄ¾ØÕóPºÍQ
+		// éšæœºå®šä¹‰å…ƒç´ ä¸º0çš„çŸ©é˜µPå’ŒQ
 		File QMatFile = new File(FileUtils.getFileAbsolutePath("data/QMat.txt"));
 		File PMatFile = new File(FileUtils.getFileAbsolutePath("data/PMat.txt"));
 		Matrix P = null;
 		Matrix Q = null;
 		if(QMatFile.exists() && PMatFile.exists()){
-//			System.out.println("´ÓÎÄ¼şÖĞ³õÊ¼»¯P¡¢Q¾ØÕó.....");
+//			System.out.println("ä»æ–‡ä»¶ä¸­åˆå§‹åŒ–Pã€QçŸ©é˜µ.....");
 			P = DataSource.getMatrixFromFile(PMatFile);
 			Q = DataSource.getMatrixFromFile(QMatFile);
 		}else{
-//			System.out.println("Ëæ»ú³õÊ¼»¯P¡¢Q¾ØÕó.....");
+//			System.out.println("éšæœºåˆå§‹åŒ–Pã€QçŸ©é˜µ.....");
 			P = Matrix.random(rowNum, fDim).times(0.1);
 			Q = Matrix.random(fDim, colNum).times(0.1);
 			
@@ -93,7 +93,7 @@ public class DTI2 {
 			Q = Q.arrayTimes(K.transpose());
 			
 			R = P.times(Q);
-			// ¼ÆËãRMSE
+			// è®¡ç®—RMSE
 			double sum = 0.0;
 			int n = (R.getColumnDimension()) * (R.getRowDimension());
 			int zero = 0;
@@ -121,17 +121,17 @@ public class DTI2 {
 	}
 
 	public Matrix nmf(Matrix A) {
-		// Ëæ»ú¶¨ÒåÔªËØÎª0µÄ¾ØÕóPºÍQ
+		// éšæœºå®šä¹‰å…ƒç´ ä¸º0çš„çŸ©é˜µPå’ŒQ
 		File QMatFile = new File(FileUtils.getFileAbsolutePath("data/QMat.txt"));
 		File PMatFile = new File(FileUtils.getFileAbsolutePath("data/PMat.txt"));
 		Matrix P = null;
 		Matrix Q = null;
 		if(QMatFile.exists() && PMatFile.exists()){
-//			System.out.println("´ÓÎÄ¼şÖĞ³õÊ¼»¯P¡¢Q¾ØÕó.....");
+//			System.out.println("ä»æ–‡ä»¶ä¸­åˆå§‹åŒ–Pã€QçŸ©é˜µ.....");
 			P = DataSource.getMatrixFromFile(PMatFile);
 			Q = DataSource.getMatrixFromFile(QMatFile);
 		}else{
-//			System.out.println("Ëæ»ú³õÊ¼»¯P¡¢Q¾ØÕó.....");
+//			System.out.println("éšæœºåˆå§‹åŒ–Pã€QçŸ©é˜µ.....");
 			P = Matrix.random(rowNum, fDim).times(0.1);
 			Q = Matrix.random(fDim, colNum).times(0.1);
 			
@@ -144,7 +144,7 @@ public class DTI2 {
 		double lambda = 0.2;
 		for (int c = 0; c < 100; c++) {
 
-			/////// PijºÍQij¸üĞÂ¹«Ê½
+			/////// Pijå’ŒQijæ›´æ–°å…¬å¼
 			Matrix Pnominator = A.times(Q.transpose());
 			Matrix Pdenominator = P.times(lambda).plus(P.times(Q.times(Q.transpose())));
 			modify(Pdenominator);
@@ -174,7 +174,7 @@ public class DTI2 {
 			}
 
 			R = P.times(Q);
-			// ¼ÆËãRMSE
+			// è®¡ç®—RMSE
 			double sum = 0.0;
 			int n = (R.getColumnDimension()) * (R.getRowDimension());
 			int zero = 0;
@@ -200,7 +200,7 @@ public class DTI2 {
 		}
 
 		// Q.print(1, 10);
-		// ¼ÆËãÏàËÆ¶È¾ØÕó
+		// è®¡ç®—ç›¸ä¼¼åº¦çŸ©é˜µ
 		calcSimilarity(A, Q, K);
 		return R;
 
@@ -217,11 +217,11 @@ public class DTI2 {
 	}
 
 	public void calcAUC(Matrix A, Matrix R) {
-		// AUC¼ÆËã
-		///// ¸øÔ¤²âÖµ¾ØÕóÖĞ90%µÄÊı°´´Ó´óµ½Ğ¡µÄË³ĞòÅÅĞò
+		// AUCè®¡ç®—
+		///// ç»™é¢„æµ‹å€¼çŸ©é˜µä¸­90%çš„æ•°æŒ‰ä»å¤§åˆ°å°çš„é¡ºåºæ’åº
 		List<SortInfomation> list = new ArrayList<>();
 
-		// ½«ÕæÊµ¾ØÕóÖĞ90%ÖµÎª1µÄÔªËØÅÅ³ı£¬ÆäËûÊı·ÅÈëÊıÁĞ
+		// å°†çœŸå®çŸ©é˜µä¸­90%å€¼ä¸º1çš„å…ƒç´ æ’é™¤ï¼Œå…¶ä»–æ•°æ”¾å…¥æ•°åˆ—
 		for (int i = 0; i < R.getRowDimension(); i++) {
 			for (int j = 0; j < R.getColumnDimension(); j++) {
 				if (A.get(i, j) == 1) {
@@ -240,12 +240,12 @@ public class DTI2 {
 			}
 		});
 		
-		System.out.println("¿¿Ç°µÄÔ¤²â½á¹û£º");
+		System.out.println("é å‰çš„é¢„æµ‹ç»“æœï¼š");
 		for(int i=0; i<40; i++){
 			System.out.println(list.get(i).val);
 		}
 		
-		// ÒÔãĞÖµÎª»ù×¼½«tempc·Ö³ÉÁ½¸ösubmap²¢½«ÆäÖĞµÄÖµÓëÎ»ÖÃ¶ÔÓ¦
+		// ä»¥é˜ˆå€¼ä¸ºåŸºå‡†å°†tempcåˆ†æˆä¸¤ä¸ªsubmapå¹¶å°†å…¶ä¸­çš„å€¼ä¸ä½ç½®å¯¹åº”
 		int TP = 0;
 		int FN = 0;
 		int FP = 0;
@@ -255,7 +255,7 @@ public class DTI2 {
 			int ai = info.i;
 			int aj = info.j;
 
-			// ¼ÆËãTP£¬FN£¬FP£¬TNµÄ¸öÊı
+			// è®¡ç®—TPï¼ŒFNï¼ŒFPï¼ŒTNçš„ä¸ªæ•°
 			if (truePositive.contains(ai + "#" + aj)) {
 				TP++;
 			} else {
@@ -271,7 +271,7 @@ public class DTI2 {
 
 			if (k % 10 == 0) {
 				// if (FPR < 0) {
-				// System.out.println("³öÏÖ´íÎó£º" + FP + " , " + TN);
+				// System.out.println("å‡ºç°é”™è¯¯ï¼š" + FP + " , " + TN);
 				// }
 //				System.out.println(FPR + ":" + TPR);
 //				System.out.println(Recall+":"+Precision);
@@ -280,10 +280,10 @@ public class DTI2 {
 	}
 
 	/**
-	 * Ô¤´¦Àí
+	 * é¢„å¤„ç†
 	 * 
 	 * @param file
-	 *            Êı¾İ¼¯ÎÄ¼ş
+	 *            æ•°æ®é›†æ–‡ä»¶
 	 * @return
 	 */
 	public Matrix preProcess(File file) {
@@ -319,7 +319,7 @@ public class DTI2 {
 				double bottomL = 0.0;
 				double bottomR = 0.0;
 
-				// ¼ÆËãÆ½¾ùÖµ
+				// è®¡ç®—å¹³å‡å€¼
 				double iAvg = 0.0;
 				double jAvg = 0.0;
 				for (int d = 0; d < row; d++) {
@@ -385,7 +385,7 @@ public class DTI2 {
 	 * 
 	 * @param QMat
 	 * @param topK
-	 *            È¡Ç°topK¸ö×îÏàËÆ
+	 *            å–å‰topKä¸ªæœ€ç›¸ä¼¼
 	 */
 	public void calcSimilarity(Matrix A, Matrix QMat, int topK) {
 		int n = QMat.getColumnDimension();
@@ -399,7 +399,7 @@ public class DTI2 {
 				double bottomL = 0.0;
 				double bottomR = 0.0;
 
-				// ¼ÆËãÆ½¾ùÖµ
+				// è®¡ç®—å¹³å‡å€¼
 				double iAvg = 0.0;
 				double jAvg = 0.0;
 				for (int d = 0; d < f; d++) {
